@@ -1,0 +1,76 @@
+{
+	"asset": {
+		"version": "2.0",
+		"generator" : "Bsp2Rclm"
+	},
+	"buffers": [
+		{
+			"byteLength": 1374932,
+			"uri" : "vx.bin"
+		}
+	],
+	"bufferViews": [
+		{
+			"buffer": 0,
+			"byteLength" : 1128992,
+			"byteOffset" : 0,
+			"byteStride" : 32
+		},
+		{
+			"buffer": 0,
+			"byteLength" : 245940,
+			"byteOffset" : 1128992,
+			"byteStride" : 4
+		}
+	],
+	"accessors" : [
+		{
+			"bufferView" : 0,
+			"byteOffset" : 0,
+			"componentType" : 5126,
+			"count" : 35281,
+			"type" : "VEC3"
+		},
+		{
+			"bufferView" : 0,
+			"byteOffset" : 24,
+			"componentType" : 5126,
+			"count" : 35281,
+			"type" : "VEC2"
+		},
+		{
+			"bufferView" : 1,
+			"byteOffset" : 0,
+			"componentType" : 5125,
+			"count" : 61485,
+			"type" : "SCALAR"
+		}
+	],
+	"meshes": [
+		{
+			"primitives": [
+				{
+					"attributes": {
+						"TEXCOORD_0": 1,
+						"POSITION": 0
+					},
+					"indices": 2
+				}
+			],
+			"name": "Level"
+		}
+	],
+	"nodes": [
+		{
+			"mesh": 0,
+			"rotation": [0.0, 1.0, 0.0, 0.0],
+			"name": "Level"
+		}
+	],
+	"scene": 0,
+	"scenes": [
+		{
+			"nodes": [0]
+		}
+	]
+}
