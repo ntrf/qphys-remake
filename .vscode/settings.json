@@ -1,5 +1,22 @@
 {
 	"glsllint.glslangValidatorPath": "glslangvalidator.exe",
 	"glsllint.glslangValidatorArgs": "",
-	"C_Cpp.intelliSenseEngineFallback": "Disabled"
+	"C_Cpp.intelliSenseEngineFallback": "Disabled",
+	"codedox": {
+		"fileheader": {
+			"templates": {
+				"*": [
+					"${license_apache_2_0}"
+				]
+			},
+			"params": {
+				"verilog": {
+					"company": "Anton Nesterov"
+				},
+				"haxe": {
+					"company": "Anton Nesterov"
+				}
+			}
+		}
+	}
 }

@@ -1,11 +1,9 @@
 -cp src
--main Main
-
 -debug
 
 -lib linc_glfw
 -lib linc_opengl
--lib glm
+
+-main Main
 
 -cpp build.cpp
-
