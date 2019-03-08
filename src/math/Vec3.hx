@@ -17,30 +17,26 @@ package math;
 
 import haxe.io.Float32Array;
 
-abstract Vec3(Float32Array) from Float32Array {
+abstract Vec3(Float32Array) {
 
-	inline public function new(?x:Float=0,?y:Float=0,?z:Float=0) {
+	inline public function new(x : Single = 0, y : Single = 0, z : Single = 0) {
 		this = new Float32Array(3);
 	    this[0] = x;
 	    this[1] = y;
 	    this[2] = z;
 	}
 
-	inline public function set(?x:Float=0,?y:Float=0,?z:Float=0) {
-		this[0] = x;
-	    this[1] = y;
-	    this[2] = z;
-	}
-
-	public var x(get,set):Single;
-	public var y(get,set):Single;
-	public var z(get,set):Single;
+	public var x(get,set) : Single;
+	public var y(get,set) : Single;
+	public var z(get,set) : Single;
 	inline function get_x() return this[0];
 	inline function get_y() return this[1];
 	inline function get_z() return this[2];
-	inline function set_x(v:Single) return this[0] = v;
-	inline function set_y(v:Single) return this[1] = v;
-	inline function set_z(v:Single) return this[2] = v;
+	inline function set_x(v : Single) return this[0] = v;
+	inline function set_y(v : Single) return this[1] = v;
+	inline function set_z(v : Single) return this[2] = v;
+
+	inline public function clone() return new Vec3(x, y, z);
 
 	@:arrayAccess
 	public inline function getElement(index : Int) {
@@ -48,49 +44,42 @@ abstract Vec3(Float32Array) from Float32Array {
 	} 
 	
 	@:arrayAccess 
-	public inline function setElement(index : Int, v : Float) : Float {
+	public inline function setElement(index : Int, v : Single) : Single {
 		this[index] =  v;
 		return v;
 	}
 
-	/**
-	 * Makes a clone of this vector
-	 */
-	inline public function clone() { return new Vec3(this[0], this[1], this[2]); }
-
-	//TODO check if that makes sense
-	/**
-	* Transforms the vec3 with a mat4.
-	*
-	* @param {vec3} out the receiving vector
-	* @param {vec3} a the vector to transform
-	* @param {mat4} m matrix to transform with
-	* @returns {vec3} out
-	*/
-	inline public function transformMat4(out : Vec3, m : Mat4) : Vec3 {
-		var x = this[0];
-		var y = this[1];
-		var z = this[2];
-		out.x = m[0] * x + m[4] * y + m[8] * z + m[12];
-		out.y = m[1] * x + m[5] * y + m[9] * z + m[13];
-		out.z = m[2] * x + m[6] * y + m[10] * z + m[14];
-		return out;
+	inline public function dot(v : Vec3) : Single {
+		return x * v.x + y * v.y + z * v.z;
 	}
 
-//	public static function fromData()
-//	{
-//		
-//	}
-
-	public function dot(b : Vec3) : Single {
-		var d : Single = x * b.x + y * b.y + z * b.z;
-		return d;
+	inline public static function cross(out : Vec3, a : Vec3, b : Vec3) {
+		out.x = a.y * b.z - b.y * a.z;
+		out.y = a.z * b.x - b.z * b.x;
+		out.z = a.x * b.y - a.y * b.x;
 	}
 
-	public function addIn(b : Vec3) : Vec3 {
-		this[0] += b.x;
-		this[1] += b.y;
-		this[2] += b.z;
-		return this;
+	inline public function add(v : Vec3) {
+		x = x + v.x;
+		y = y + v.y;
+		z = z + v.z;
+	}
+
+	inline public function mul(v : Vec3) {
+		x = x * v.x;
+		y = y * v.y;
+		z = z * v.z;
+	}
+
+	inline public function mulScalar(f : Single) {
+		x = x * f;
+		y = y * f;
+		z = z * f;
+	}
+
+	inline public function mulAcc(v : Vec3, t : Single) {
+		x = x + v.x * t;
+		y = y + v.y * t;
+		z = z + v.z * t;
 	}
 }

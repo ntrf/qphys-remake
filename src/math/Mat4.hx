@@ -38,6 +38,10 @@ abstract Mat4(Float32Array) to haxe.io.Float32Array {
 	inline function get_up() { return new Vec3(this[4], this[5], this[6]); }
 	inline function set_up(v : Vec3) { this[4] = v.x; this[5] = v.y; this[6] = v.z; return v; }
 
+	public var position(get, set) : Vec3;
+	inline function get_position() { return new Vec3(this[12], this[13], this[14]); }
+	inline function set_position(v : Vec3) { this[12] = v.x; this[13] = v.y; this[14] = v.z; return v; }
+
 	@:arrayAccess
 	public inline function getElement(index : Int) {
 		return this[index];

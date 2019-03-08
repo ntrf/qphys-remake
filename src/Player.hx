@@ -41,15 +41,13 @@ class Player
 	function handleInputs()
 	{
 		var fmove = Input.getKey(Input.Key.KEY_W) - Input.getKey(Input.Key.KEY_S);
-		var smove = Input.getKey(Input.Key.KEY_A) - Input.getKey(Input.Key.KEY_D);
+		var smove = Input.getKey(Input.Key.KEY_D) - Input.getKey(Input.Key.KEY_A);
 
 		camera.addAngles(Input.mouseDeltaX * sensitivity, Input.mouseDeltaY * sensitivity);
 		camera.updateMatrix();
 
-		//camera.viewMatrix.backward(-fmove * speed * Engine.delta);
-		//camera.viewMatrix.right(-smove * speed * Engine.delta);
-
-		//position
+		camera.move(fmove * speed * Engine.delta, smove * speed * Engine.delta);
+		camera.completeMatrix();
 	}
 
 	function update()

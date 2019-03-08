@@ -17,9 +17,9 @@ package math;
 
 import haxe.io.Float32Array;
 
-abstract Vec4(Float32Array){
+abstract Vec4(Float32Array) {
 
-	inline public function new(x : Single = 0, y : Single = 0, z : Single = 0, w : Single = 0) {
+	inline public function new(x : Single = 0, y : Single = 0, z : Single = 0, w : Single = 1.0) {
 		this = new Float32Array(4);
 	    this[0] = x;
 	    this[1] = y;
@@ -39,6 +39,8 @@ abstract Vec4(Float32Array){
 	inline function set_y(v : Single) return this[1] = v;
 	inline function set_z(v : Single) return this[2] = v;
 	inline function set_w(v : Single) return this[3] = v;
+
+	inline public function clone() return new Vec4(x, y, z, w);
 
 	/**
 	* Transforms the vec4 with a mat4.
@@ -66,8 +68,12 @@ abstract Vec4(Float32Array){
 	} 
 	
 	@:arrayAccess 
-	public inline function setElement(index : Int, v : Float) : Float {
+	public inline function setElement(index : Int, v : Single) : Single {
 		this[index] =  v;
 		return v;
+	}
+
+	inline public function dot(v : Vec4) : Single {
+		return x * v.x + y * v.y + z * v.z + w * v.w;
 	}
 }

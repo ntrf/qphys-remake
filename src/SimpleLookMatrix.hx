@@ -19,6 +19,8 @@ import math.Mat4;
 
 class SimpleLookMatrix
 {
+	public var position(default, null) : Vec3;
+
 	public var viewMatrix(default, null) : Mat4;
 	public var invViewMatrix(default, null) : Mat4;
 
@@ -27,6 +29,7 @@ class SimpleLookMatrix
 
 	public function new()
 	{
+		position = new Vec3();
 		viewMatrix = new Mat4();
 		invViewMatrix = new Mat4();
 	}
@@ -56,11 +59,22 @@ class SimpleLookMatrix
 		viewMatrix.right = dx;
 		viewMatrix.up = dy;
 		viewMatrix.backward = dz;
+	}
 
+	public function move(fwd : Single, right : Single)
+	{
+		position.mulAcc(viewMatrix.right, -right);
+		position.mulAcc(viewMatrix.backward, fwd);
+
+		viewMatrix.position = position;
+	}
+
+	public function completeMatrix()
+	{
 		//### i probably shouldn't do this here
 		Mat4.invert(invViewMatrix, viewMatrix);
 
-		trace(invViewMatrix);
-		trace(viewMatrix);
+		//trace(invViewMatrix);
+		//trace(viewMatrix);
 	}
 }
