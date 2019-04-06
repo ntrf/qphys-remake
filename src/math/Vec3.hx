@@ -49,6 +49,18 @@ abstract Vec3(Float32Array) {
 		return v;
 	}
 
+	inline public function copy(v : Vec3) {
+		x = v.x;
+		y = v.y;
+		z = v.z;
+	}
+
+	inline public function negate(v : Vec3) {
+		x = -v.x;
+		y = -v.y;
+		z = -v.z;
+	}
+
 	inline public function dot(v : Vec3) : Single {
 		return x * v.x + y * v.y + z * v.z;
 	}
@@ -77,9 +89,37 @@ abstract Vec3(Float32Array) {
 		z = z * f;
 	}
 
+	inline public function divScalar(f : Single) {
+		x = x / f;
+		y = y / f;
+		z = z / f;
+	}
+
 	inline public function mulAcc(v : Vec3, t : Single) {
 		x = x + v.x * t;
 		y = y + v.y * t;
 		z = z + v.z * t;
 	}
+
+	inline public function lengthSqr() : Single {
+		return x * x + y * y + z * z;
+	}
+	
+	inline public function length() : Single return Math.sqrt(lengthSqr());
+
+	inline public function distanceSqr(b : Vec3) : Single {
+		var dx = x - b.x;
+		var dy = y - b.y;
+		var dz = z - b.z;
+		return dx * dx + dy * dy + dz * dz;
+	}
+
+	inline public function distance(b : Vec3) : Single return Math.sqrt(distanceSqr(b));
+
+
+	// List from twgl:
+	// function cross(a, b, dest) : Vec3
+	// function divide(a, b, dest) : Vec3
+	// function lerp(a, b, t, dest) : Vec3
+	// function normalize(v, dest) : Vec3
 }
