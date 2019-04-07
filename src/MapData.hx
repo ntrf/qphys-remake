@@ -51,8 +51,8 @@ class MapData
 	{
 		var inp = File.read("../data/vx.bin");
 
-		var vertexDataSize = 1128992;
-		var indexDataSize = 245940;
+		var vertexDataSize = 193440;
+		var indexDataSize = 44076;
 
 		vertexData = inp.read(vertexDataSize);
 		indexData = inp.read(indexDataSize);

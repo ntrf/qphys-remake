@@ -49,6 +49,12 @@ abstract Vec3(Float32Array) {
 		return v;
 	}
 
+	inline public function set(sx : Single = 0, sy : Single = 0, sz : Single = 0) {
+		x = sx;
+		y = sy;
+		z = sz;
+	}
+
 	inline public function copy(v : Vec3) {
 		x = v.x;
 		y = v.y;
@@ -101,6 +107,13 @@ abstract Vec3(Float32Array) {
 		z = z + v.z * t;
 	}
 
+	inline public function lepr(v : Vec3, t : Single) {
+		var it = 1.0 - t;
+		x = x * it + v.x * t;
+		y = y * it + v.y * t;
+		z = z * it + v.z * t;
+	}
+
 	inline public function lengthSqr() : Single {
 		return x * x + y * y + z * z;
 	}
@@ -116,6 +129,7 @@ abstract Vec3(Float32Array) {
 
 	inline public function distance(b : Vec3) : Single return Math.sqrt(distanceSqr(b));
 
+	public function toString() return '[$x $y $z]';
 
 	// List from twgl:
 	// function cross(a, b, dest) : Vec3

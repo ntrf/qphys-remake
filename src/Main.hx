@@ -79,13 +79,15 @@ class Main
 
 			//2. Run world update
 			handleInput();
+
+
 			
 			//3. Render world
 			var fbsize = mainWindow.win.getFramebufferSize();
 			GL.glViewport(0, 0, fbsize[0], fbsize[1]);
 			var aspect = fbsize[0] / fbsize[1];
 			Mat4.perspective(projectionMatrix, 80.0 / 180.0 * Math.PI,
-				aspect, 0.01, 100.0); 
+				aspect, 0.1, 10000.0);
 
 			GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
 

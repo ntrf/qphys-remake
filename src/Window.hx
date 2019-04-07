@@ -32,7 +32,7 @@ class Window
 		GLFW.hint(GLFW.CONTEXT_VERSION_MAJOR, 3);
 		GLFW.hint(GLFW.CONTEXT_VERSION_MINOR, 3);
 
-		win = glfw.Window.createWindow(1280, 720, "Reclaim engine");
+		win = glfw.Window.createWindow(960, 640, "Reclaim engine");
 
 		win.makeCurrent();
 

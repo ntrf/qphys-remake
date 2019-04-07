@@ -33,7 +33,7 @@ class Engine
 		var lastFrameTime = frameTime;
 		var ft = GLFW.getTime();
 
-		var dt = lastFrameTime - ft;
+		var dt = ft - lastFrameTime;
 
 		delta = cast dt;
 		frameTime = ft;

@@ -19,7 +19,7 @@ import math.Mat4;
 
 class SimpleLookMatrix
 {
-	public var position(default, null) : Vec3;
+	public var position : Vec3;
 
 	public var viewMatrix(default, null) : Mat4;
 	public var invViewMatrix(default, null) : Mat4;
