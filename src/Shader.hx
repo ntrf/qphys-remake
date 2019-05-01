@@ -30,6 +30,7 @@ class Shader
 
 	public var projUni : Int;
 	public var viewUni : Int;
+	public var mainTexUni : Int;
 	
 	public function compileShader(type : Int, source : String)
 	{
@@ -66,6 +67,7 @@ class Shader
 
 		projUni = GL.glGetUniformLocation(prog, "projection");
 		viewUni = GL.glGetUniformLocation(prog, "view");
+		mainTexUni = GL.glGetUniformLocation(prog, "mainTex");
 
 		program = prog;
 	}

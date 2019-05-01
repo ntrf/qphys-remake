@@ -42,6 +42,8 @@ class Main
 
 	public static var baseMap : MapData;
 
+	public static var console : Console;
+
 	static function updateWorld()
 	{
 		
@@ -71,6 +73,9 @@ class Main
 
 		Input.captureMouse(true);
 
+		console = new Console();
+		console.init();
+
 		while (!mainWindow.win.shouldClose()) {
 			GLFW.pollEvents();
 
@@ -96,6 +101,9 @@ class Main
 
 			baseMap.bind();
 			GL.glDrawElementsOffset(GL.GL_TRIANGLES, 61485, GL.GL_UNSIGNED_INT, 0);
+
+
+			console.render(fbsize[0], fbsize[1]);
 
 			mainWindow.swap();
 		}
