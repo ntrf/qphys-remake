@@ -1,3 +1,4 @@
+import haxe.io.Int32Array;
 /*
  * Apache License, Version 2.0
  *
@@ -18,6 +19,8 @@ import sys.io.File;
 import haxe.io.Bytes;
 
 import opengl.GL;
+
+import math.Vec4;
 
 @:publicFields
 class Plane
@@ -45,17 +48,38 @@ class MapData
 	var vertexData : Bytes;
 	var indexData : Bytes;
 
+	var planeData : Bytes;
+	var brushData : Bytes;
+
 	public function new() {}
+
+	public function getPlane(i : Int) {
+		return Vec4.fromBytes(planeData, i * 20);
+	}
+
+	public function getBrush(i : Int) {
+		return Int32Array.fromBytes(brushData, i * 8);
+	}
+
+	public var numBrushes : Int;
+	public var numPlanes : Int;
 
 	public function load()
 	{
 		var inp = File.read("../data/vx.bin");
 
-		var vertexDataSize = 193440;
-		var indexDataSize = 44076;
+		var vertexDataSize = 169888;
+		var indexDataSize = 39252;
+		var planeDataSize = 15780;
+		var brushDataSize = 560;
 
 		vertexData = inp.read(vertexDataSize);
 		indexData = inp.read(indexDataSize);
+		planeData = inp.read(planeDataSize);
+		brushData = inp.read(brushDataSize);
+
+		numPlanes = Std.int(planeData.length / 20);
+		numBrushes = Std.int(brushData.length / 8);
 	}
 
 	var glVbo : Int = 0;

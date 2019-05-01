@@ -5,22 +5,34 @@
 	},
 	"buffers": [
 		{
-			"byteLength": 237516,
+			"byteLength": 225480,
 			"uri" : "vx.bin"
 		}
 	],
 	"bufferViews": [
 		{
 			"buffer": 0,
-			"byteLength" : 193440,
+			"byteLength" : 169888,
 			"byteOffset" : 0,
 			"byteStride" : 32
 		},
 		{
 			"buffer": 0,
-			"byteLength" : 44076,
-			"byteOffset" : 193440,
+			"byteLength" : 39252,
+			"byteOffset" : 169888,
 			"byteStride" : 4
+		},
+		{
+			"buffer": 0,
+			"byteLength" : 15780,
+			"byteOffset" : 209140,
+			"byteStride" : 20
+		},
+		{
+			"buffer": 0,
+			"byteLength" : 560,
+			"byteOffset" : 224920,
+			"byteStride" : 8
 		}
 	],
 	"accessors" : [
@@ -28,21 +40,21 @@
 			"bufferView" : 0,
 			"byteOffset" : 0,
 			"componentType" : 5126,
-			"count" : 6045,
+			"count" : 5309,
 			"type" : "VEC3"
 		},
 		{
 			"bufferView" : 0,
 			"byteOffset" : 24,
 			"componentType" : 5126,
-			"count" : 6045,
+			"count" : 5309,
 			"type" : "VEC2"
 		},
 		{
 			"bufferView" : 1,
 			"byteOffset" : 0,
 			"componentType" : 5125,
-			"count" : 11019,
+			"count" : 9813,
 			"type" : "SCALAR"
 		}
 	],

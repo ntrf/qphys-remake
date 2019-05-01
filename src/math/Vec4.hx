@@ -26,6 +26,9 @@ abstract Vec4(Float32Array) {
 	    this[2] = z;
 	    this[3] = w;
 	}
+	public static function fromBytes(bytes : haxe.io.Bytes, bytePos = 0) : Vec4 {
+		return cast Float32Array.fromBytes(bytes, bytePos, 16);
+	}
 
 	public var x(get,set) : Single;
 	public var y(get,set) : Single;
