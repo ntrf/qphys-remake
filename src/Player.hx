@@ -205,7 +205,7 @@ class Player
 
 		var onGround = Physics.checkGround(bbox, position);
 
-		//trace('speed = ${Math.sqrt(velocity.x * velocity.x + velocity.z * velocity.z)}');
+		Main.console.setLine(1, 'speed = ${Math.sqrt(velocity.x * velocity.x + velocity.z * velocity.z)}');
 
 		if (!gravityEnabled) {
 			applyFriction();

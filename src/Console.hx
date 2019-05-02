@@ -47,18 +47,10 @@ class Console
 		GL.glBindBuffer(GL.GL_ARRAY_BUFFER, vbuffer);
 		GL.glBufferDataEmpty(GL.GL_ARRAY_BUFFER, bufferData.length, GL.GL_DYNAMIC_DRAW);
 
-		putVertex(0, 0,   128, 0.0, 0.0);
-		putVertex(1, 0,     0, 0.0, 1.0);
-		putVertex(2, 256,   0, 1.0, 1.0);
-		putVertex(3, 0,   128, 0.0, 0.0);
-		putVertex(4, 256,   0, 1.0, 1.0);
-		putVertex(5, 256, 128, 1.0, 0.0);
-		count = 6;
-
 		update();
 	}
 
-	function putVertex(idx : Int, x : Single, y : Single, tx : Single, ty : Single)
+	function putVertex(idx : Int, x : Int, y : Int, tx : Single, ty : Single)
 	{
 		var off = idx * 8;
 
@@ -73,25 +65,74 @@ class Console
 		bufferData[off + 7] = ty;
 	}
 
+	var lines : Array< String > = [];
+
+	function buildLine(val : String, y : Int)
+	{
+		var l = val.length;
+		var i = 0;
+		var x = 5;
+		var vi = count;
+
+		var dtx = 3.0 / 64.0;
+		var dty = 5.0 / 32.0;
+
+		while (i < l) {
+			var ch = val.charCodeAt(i);
+			if (ch != null && ch > 0x20 && ch < 0x7f) {
+				var tx = ch - 0x20;
+				var ty = Std.int(tx / 20);
+				tx -= ty * 20;
+
+				// ty * 5 / 32
+				var ftx = tx * dtx;
+				var fty = ty * dty; 
+
+				putVertex(vi + 0, x, y, ftx, fty);
+				putVertex(vi + 1, x, y + 20, ftx, fty + dty);
+				putVertex(vi + 2, x + 12, y + 20, ftx + dtx, fty + dty);
+				putVertex(vi + 3, x, y, ftx, fty);
+				putVertex(vi + 4, x + 12, y + 20, ftx + dtx, fty + dty);
+				putVertex(vi + 5, x + 12, y, ftx + dtx, fty);
+				vi += 6;
+			}
+			++i;
+			x += 12;
+		}
+
+		count = vi;
+	}
+
+	public function setLine(i : Int, str : String)
+	{
+		//### check length
+		lines[i] = str;
+	}
+
 	public function update()
 	{
+		count = 0;
+		for (i in 0 ... lines.length) {
+			buildLine(lines[i], i * 24);
+		}
+
 		GL.glBindBuffer(GL.GL_ARRAY_BUFFER, vbuffer);
 		GL.glBufferSubData(GL.GL_ARRAY_BUFFER, bufferData.view.byteOffset, count * 32, bufferData.view.buffer.getData());
 	}
 
 	public function render(fbWidth : Single, fbHeight : Single)
 	{
+		update();
+
 		if (count <= 0)
 			return;
-
-		
 
 		GL.glDisable(GL.GL_DEPTH_TEST);
 		GL.glEnable(GL.GL_BLEND);
 		GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		GL.glUseProgram(shader.program);
-		GL.glUniform4f(shader.projUni, 2.0 / fbWidth, 2.0 / fbHeight, -1.0, -1.0);
+		GL.glUniform4f(shader.projUni, 2.0 / fbWidth, -2.0 / fbHeight, -1.0, 1.0);
 		GL.glUniform1i(shader.mainTexUni, 0);
 
 		GL.glActiveTexture(0);
