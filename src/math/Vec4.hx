@@ -27,7 +27,7 @@ abstract Vec4(Float32Array) {
 	    this[3] = w;
 	}
 	public static function fromBytes(bytes : haxe.io.Bytes, bytePos = 0) : Vec4 {
-		return cast Float32Array.fromBytes(bytes, bytePos, 16);
+		return cast Float32Array.fromBytes(bytes, bytePos, 4);
 	}
 
 	public var x(get,set) : Single;
@@ -44,6 +44,8 @@ abstract Vec4(Float32Array) {
 	inline function set_w(v : Single) return this[3] = v;
 
 	inline public function clone() return new Vec4(x, y, z, w);
+
+	public function toString() return '[$x $y $z $w]';
 
 	/**
 	* Transforms the vec4 with a mat4.

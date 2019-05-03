@@ -34,8 +34,106 @@ class Physics
 	static var groundNormal = new Vec3(0, 1, 0);
 	static var groundPoint = new Vec3();
 
+	static function traceBoxBrush(i : Int, last : Single, box : BBox, start : Vec3, end : Vec3, tr : TraceResult) : Float
+	{
+		var map = Main.baseMap;
+
+		var brush = map.getBrush(i);
+
+		var pi = brush[0];
+		var pn = brush[1];
+
+		var startsolid = true;
+		var endsolid = true;
+
+		var enter = -1.0;
+		var exit = 1.0;
+
+		var enterplane = null;
+
+		for (i in 0 ... pn) {
+			var plane = map.getPlane(pi + i);
+
+			var lim = plane.w + 
+				(plane.x > 0 ? box.max.x : box.min.x) * plane.x + 
+				(plane.z > 0 ? box.max.y : box.min.y) * plane.z +
+				(-plane.y > 0 ? box.max.z : box.min.z) * -plane.y;
+
+			var spos = start.x * plane.x + start.y * plane.z + start.z * -plane.y;
+			var epos = end.x * plane.x + end.y * plane.z + end.z * -plane.y;
+			
+			spos -= lim;
+			epos -= lim;
+
+			if (spos > 0) {
+				startsolid = false;
+			}
+			if (epos > 0) {
+				endsolid = false;
+			}
+
+			// check if both points are in front of the brush
+			if (spos > 0 && epos > 0) {
+				return 1.0;
+			}
+
+			// skip planes, that won't generate intersection points
+			if (spos <= 0 && epos <= 0) {
+				continue;
+			}
+
+			var d = spos - epos;
+
+			// check if there is a no movement on the axis
+			if (Math.abs(d) > 1e-7) {
+				continue;
+			}
+
+			// compute enter and exit coordinates
+			var t = spos / d;
+			if (spos > 0) {
+				if (t > enter) {
+					enter = t;
+					enterplane = plane;
+				}
+			} else {
+				if (t < exit)
+					exit = t;
+			}
+		}
+
+		// check if we're stuck
+		if (startsolid) {
+			if (tr != null)
+				tr.startsolid = true;
+			return 0.0;
+		}
+
+		// we pass by the object
+		if (enter > exit && !endsolid)
+			return 1.0;
+		
+		// did we hit a wall closer, than before
+		if (tr != null && enter > -1 && enter < last) {
+			if (enterplane != null) {
+				tr.planeNormal = new Vec3(enterplane.x, enterplane.z, -enterplane.y);
+			} else {
+				for (i in 0 ... pn) {
+					var plane = map.getPlane(brush[0] + i);
+					trace('Bad trace $i => $plane');
+				}
+			}
+		}
+
+		if (enter < 0)
+			enter = 0;
+
+		return enter;
+	}
+
 	public static function traceBox(box : BBox, start : Vec3, end : Vec3, tr : TraceResult) : Float
 	{
+#if 0
 		var sy = start.y + box.min.y;
 		var ey = end.y + box.min.y;
 
@@ -68,6 +166,19 @@ class Physics
 			if (t < 0) t = 0;
 			return t;
 		}
+#else
+		var last : Single = 1.0;
+		
+		var num = Main.baseMap.numBrushes;
+
+		for (i in 0 ... num) {
+			var res = traceBoxBrush(i, last, box, start, end, tr);
+			if (last > res)
+				last = res;
+		}
+
+		return last;
+#end
 	}
 
 	static final groundProbe = new Vec3(0, -1, 0);

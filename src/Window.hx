@@ -38,7 +38,7 @@ class Window
 
 		GLEW.init();
 
-		GL.glClearColor(0.1, 1.0, 0.3, 0.0);
+		GL.glClearColor(0.1, 0.5, 0.3, 0.0);
 		GL.glEnable(GL.GL_DEPTH_TEST);
 
 		// I don't think i'll use this

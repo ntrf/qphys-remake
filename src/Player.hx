@@ -53,7 +53,7 @@ class Player
 	static var noclipspeed = 1000.0;
 	static var noclipaccel = 100.0;
 
-	static var jumpspeed = 200.0;
+	static var jumpspeed = 240.0;
 
 	static var friction = 4.0;
 	static var stopvelocity = 100.0;
@@ -141,6 +141,11 @@ class Player
 			end.mulAcc(velocity, timeLeft);
 			var res = Physics.traceBox(bbox, position, end, tr);
 
+			if (tr.startsolid) {
+				trace('startsolid!');
+				return;
+			}
+
 			if (res >= 1.0) {
 				position.copy(end);
 				return;
@@ -160,8 +165,16 @@ class Player
 
 			//### has to handle multiple surfaces
 
+			// check if we have a plane to clip against
+			if (tr.planeNormal == null) {
+
+				trace('no clip plane $res, $position, $end');
+				velocity.set();
+				break;
+			}
+
 			// our new velocity
-			var clip = 1e-5 - tr.planeNormal.dot(velocity);
+			var clip = 1e-3 - tr.planeNormal.dot(velocity);
 			velocity.mulAcc(tr.planeNormal, clip);
 		}
 	}
