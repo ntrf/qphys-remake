@@ -34,11 +34,11 @@ class Physics
 	static var groundNormal = new Vec3(0, 1, 0);
 	static var groundPoint = new Vec3();
 
-	static function traceBoxBrush(i : Int, last : Single, box : BBox, start : Vec3, end : Vec3, tr : TraceResult) : Float
+	static function traceBoxBrush(brushId : Int, last : Single, box : BBox, start : Vec3, end : Vec3, tr : TraceResult) : Float
 	{
 		var map = Main.baseMap;
 
-		var brush = map.getBrush(i);
+		var brush = map.getBrush(brushId);
 
 		var pi = brush[0];
 		var pn = brush[1];
@@ -85,13 +85,13 @@ class Physics
 			var d = spos - epos;
 
 			// check if there is a no movement on the axis
-			if (Math.abs(d) > 1e-7) {
-				continue;
-			}
+//			if (Math.abs(d) > 1e-7) {
+//				continue;
+//			}
 
 			// compute enter and exit coordinates
 			var t = spos / d;
-			if (spos > 0) {
+			if (d > 0) {
 				if (t > enter) {
 					enter = t;
 					enterplane = plane;
@@ -110,23 +110,19 @@ class Physics
 		}
 
 		// we pass by the object
-		if (enter > exit && !endsolid)
+		if (enter > exit)
 			return 1.0;
 		
 		// did we hit a wall closer, than before
 		if (tr != null && enter > -1 && enter < last) {
 			if (enterplane != null) {
 				tr.planeNormal = new Vec3(enterplane.x, enterplane.z, -enterplane.y);
-			} else {
-				for (i in 0 ... pn) {
-					var plane = map.getPlane(brush[0] + i);
-					trace('Bad trace $i => $plane');
-				}
 			}
 		}
 
-		if (enter < 0)
+		if (enter < 0) {
 			enter = 0;
+		}
 
 		return enter;
 	}
@@ -168,6 +164,12 @@ class Physics
 		}
 #else
 		var last : Single = 1.0;
+
+		if (tr != null) {
+			tr.planeNormal = null;
+			tr.planePoint = null;
+			tr.startsolid = false;
+		}
 		
 		var num = Main.baseMap.numBrushes;
 

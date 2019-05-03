@@ -136,13 +136,23 @@ class Player
 
 		var it = 4;
 
+//		var velstack = [];
+//		var resstack = [];
+
 		while (--it >= 0) {
+//			velstack.push(velocity.clone());
+
 			end.copy(position);
 			end.mulAcc(velocity, timeLeft);
 			var res = Physics.traceBox(bbox, position, end, tr);
 
+//			resstack.push(res);
+
 			if (tr.startsolid) {
-				trace('startsolid!');
+				trace('$it startsolid!');
+//				for (v in resstack) {
+//					trace(v);
+//				}
 				return;
 			}
 
@@ -152,31 +162,37 @@ class Player
 			}
 
 			// improve precision
-			res -= 1e-5;
+			res -= 1e-4;
 
 			// consume some time
 			timeLeft *= (1.0 - res);
 
-			if (timeLeft < 1e-3)
+			if (timeLeft < 1e-3) {
+				//trace('timeleft cut = $timeLeft');
 				return;
-
-			// calc the new end position
-			position.lepr(end, res);
-
-			//### has to handle multiple surfaces
+			}
 
 			// check if we have a plane to clip against
 			if (tr.planeNormal == null) {
-
 				trace('no clip plane $res, $position, $end');
 				velocity.set();
 				break;
 			}
 
+			var vdot = tr.planeNormal.dot(velocity);
+
+			// calc the new end position
+			position.lepr(end, res);
+			position.mulAcc(tr.planeNormal, 1e-1);
+
+			//### has to handle multiple surfaces
+
 			// our new velocity
-			var clip = 1e-3 - tr.planeNormal.dot(velocity);
+			var clip = 1 - vdot;
 			velocity.mulAcc(tr.planeNormal, clip);
 		}
+
+		trace('break $it');
 	}
 
 	function applyFriction()
