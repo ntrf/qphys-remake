@@ -27,7 +27,7 @@ abstract Vec3(Float32Array) {
 	}
 
 	public static function fromBytes(bytes : haxe.io.Bytes, bytePos = 0) : Vec3 {
-		return cast Float32Array.fromBytes(bytes, bytePos, 12);
+		return cast Float32Array.fromBytes(bytes, bytePos, 3);
 	}
 
 	public var x(get,set) : Single;

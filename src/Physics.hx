@@ -53,14 +53,15 @@ class Physics
 
 		for (i in 0 ... pn) {
 			var plane = map.getPlane(pi + i);
+			var pnormal = plane.toVec3();
 
 			var lim = plane.w + 
-				(plane.x > 0 ? box.max.x : box.min.x) * plane.x + 
-				(plane.z > 0 ? box.max.y : box.min.y) * plane.z +
-				(-plane.y > 0 ? box.max.z : box.min.z) * -plane.y;
+				(pnormal.x > 0 ? box.max.x : box.min.x) * pnormal.x + 
+				(pnormal.y > 0 ? box.max.y : box.min.y) * pnormal.y +
+				(pnormal.z > 0 ? box.max.z : box.min.z) * pnormal.z;
 
-			var spos = start.x * plane.x + start.y * plane.z + start.z * -plane.y;
-			var epos = end.x * plane.x + end.y * plane.z + end.z * -plane.y;
+			var spos = start.dot(pnormal);
+			var epos = end.dot(pnormal);
 			
 			spos -= lim;
 			epos -= lim;
@@ -94,7 +95,7 @@ class Physics
 			if (d > 0) {
 				if (t > enter) {
 					enter = t;
-					enterplane = plane;
+					enterplane = pnormal;
 				}
 			} else {
 				if (t < exit)
@@ -116,7 +117,7 @@ class Physics
 		// did we hit a wall closer, than before
 		if (tr != null && enter > -1 && enter < last) {
 			if (enterplane != null) {
-				tr.planeNormal = new Vec3(enterplane.x, enterplane.z, -enterplane.y);
+				tr.planeNormal = enterplane;
 			}
 		}
 

@@ -13,7 +13,8 @@
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}/build.cpp",
 			"environment": [],
-			"externalConsole": true,
+			"externalConsole": false,
+			"internalConsoleOptions": "openOnSessionStart",
 			"preLaunchTask": "build"
 		}
 	]

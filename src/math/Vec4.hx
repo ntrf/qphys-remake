@@ -47,6 +47,9 @@ abstract Vec4(Float32Array) {
 
 	public function toString() return '[$x $y $z $w]';
 
+	@:to
+	public function toVec3() return Vec3.fromBytes(this.view.buffer, this.view.byteOffset);
+
 	/**
 	* Transforms the vec4 with a mat4.
 	*
