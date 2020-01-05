@@ -15,8 +15,9 @@
  */
 
 
-import math.Vec3;
-import math.Mat4;
+import reclaim.Engine;
+import reclaim.math.Vec3;
+import reclaim.math.Mat4;
 
 @:publicFields
 class Player

@@ -19,11 +19,6 @@ typedef Key = glfw.GLFW.Key;
 
 class Input
 {
-	inline static var wkey = 87;
-	inline static var akey = 65;
-	inline static var skey = 83;
-	inline static var dkey = 68;
-
 	static var prevMouseX = 0.0;
 	static var prevMouseY = 0.0;
 

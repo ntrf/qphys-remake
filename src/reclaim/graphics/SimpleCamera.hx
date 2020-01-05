@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package reclaim.graphics;
 
 import reclaim.math.Vec3;
 import reclaim.math.Mat4;
 
-class SimpleLookMatrix
+class SimpleCamera
 {
-	public var position : Vec3;
+	@:isVar public var position(default, set) : Vec3;
 
 	public var viewMatrix(default, null) : Mat4;
 	public var invViewMatrix(default, null) : Mat4;
@@ -29,7 +30,6 @@ class SimpleLookMatrix
 
 	public function new()
 	{
-		position = new Vec3();
 		viewMatrix = new Mat4();
 		invViewMatrix = new Mat4();
 	}
@@ -69,12 +69,18 @@ class SimpleLookMatrix
 		viewMatrix.position = position;
 	}
 
+	function set_position(from : Vec3)
+	{
+		if (position == null)
+			position = new Vec3();
+		position.copy(from);
+		viewMatrix.position = position;
+		return from;
+	}
+
 	public function completeMatrix()
 	{
 		//### i probably shouldn't do this here
 		Mat4.invert(invViewMatrix, viewMatrix);
-
-		//trace(invViewMatrix);
-		//trace(viewMatrix);
 	}
 }

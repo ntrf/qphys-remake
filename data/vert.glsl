@@ -5,14 +5,17 @@ layout(location = 1) in vec2 i_texcoord;
 
 out vec2 v_texcoord;
 
-uniform mat4 projection;
-uniform mat4 view;
+layout(std140) uniform CameraBlock
+{
+	mat4 viewMatrix;
+	mat4 projMatrix;
+} camera;
 
 void main()
 {
 	vec4 p = vec4(i_position, 1.0);
 
-	p = projection * view * p;
+	p = camera.projMatrix * (camera.viewMatrix * p);
 
 	v_texcoord = i_texcoord;
 

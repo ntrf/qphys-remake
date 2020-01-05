@@ -16,7 +16,7 @@
 
 package ;
 
-import math.Vec3;
+import reclaim.math.Vec3;
 
 typedef BBox = {
 	var min : Vec3;

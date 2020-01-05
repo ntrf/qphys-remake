@@ -13,29 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package reclaim.math;
 
-
-import glfw.GLFW;
-
-class Engine
+abstract Quat(haxe.io.Float32Array)
 {
-	public static var delta : Single;
-	public static var frameTime : Float;
-
-	public static function resetTimer()
-	{
-		frameTime = GLFW.getTime();
-		delta = 0;
-	}
-
-	public static function updateTimer()
-	{
-		var lastFrameTime = frameTime;
-		var ft = GLFW.getTime();
-
-		var dt = ft - lastFrameTime;
-
-		delta = cast dt;
-		frameTime = ft;
-	}
+	
 }

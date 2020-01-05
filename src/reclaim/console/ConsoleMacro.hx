@@ -13,9 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package math;
+package reclaim.console;
 
-abstract Quat(haxe.io.Float32Array)
+import haxe.macro.Expr;
+import haxe.macro.Context;
+
+class ConsoleMacro
 {
-	
+	macro public static function reg() : Array< Field >
+	{
+		var fields = Context.getBuildFields();
+		return fields;
+	}
 }

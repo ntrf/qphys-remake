@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+package reclaim.graphics;
 
 import sys.io.File;
 import opengl.GL;
@@ -79,14 +79,6 @@ class Shader
 
 		vertSource = content1;
 		fragSource = content2;
-	}
-
-	public function setProjection(p : math.Mat4, v : math.Mat4)
-	{
-		var xv = [for (i in 0 ... 16) (v[i] : cpp.Float32)];
-		GL.glUniformMatrix4fv(viewUni, 1, false, xv);
-		var xp = [for (i in 0 ... 16) (p[i] : cpp.Float32)];
-		GL.glUniformMatrix4fv(projUni, 1, false, xp);
 	}
 
 	public function new() {}

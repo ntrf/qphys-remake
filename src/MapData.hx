@@ -1,4 +1,3 @@
-import haxe.io.Int32Array;
 /*
  * Apache License, Version 2.0
  *
@@ -15,18 +14,20 @@ import haxe.io.Int32Array;
  * limitations under the License.
  */
 
+import haxe.io.Int32Array;
 import sys.io.File;
 import haxe.io.Bytes;
 
 import opengl.GL;
 
-import math.Vec4;
+import reclaim.math.Vec3;
+import reclaim.math.Vec4;
 
 @:publicFields
 class Plane
 {
-	var normal : math.Vec3;
-	var offset : math.Vec3;
+	var normal : Vec3;
+	var offset : Vec3;
 }
 
 @:publicFields

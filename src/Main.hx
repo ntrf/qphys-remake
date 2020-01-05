@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import math.Mat4;
+import reclaim.Engine;
+import reclaim.math.Mat4;
 import opengl.GL;
 import glfw.GLFW;
 
@@ -23,8 +24,6 @@ class Main
 	public static var mainWindow : Window;
 
 	public static var player : Player;
-
-	public static var projectionMatrix : Mat4;
 
 	static function handleInput()
 	{
@@ -35,14 +34,24 @@ class Main
 		player.handleInputs();
 	}
 
+	static function onchar(char : Int)
+	{
+		console.onchar(char);
+	}
+	static function onkey(key : Int, scancode : Int, action : Int, mods : Int)
+	{
+		if (action == KeyState.PRESS || action == KeyState.REPEAT)
+			console.onkey(key);
+	}	
+
 	public static var runningTime = 0.0;
 	public static var deltaTime : Single;
 
-	public static var baseShader : Shader;
+	public static var baseShader : reclaim.graphics.Shader;
 
 	public static var baseMap : MapData;
 
-	public static var console : Console;
+	public static var console : reclaim.console.Console;
 
 	static function updateWorld()
 	{
@@ -59,21 +68,34 @@ class Main
 		Engine.resetTimer();
 		Input.resetMouse();
 
+		mainWindow.win.setCharCallback(onchar);
+		mainWindow.win.setKeyCallback(onkey);
+
 		player = new Player();
 
-		baseShader = new Shader();
+		baseShader = new reclaim.graphics.Shader();
 		baseShader.loadShaders("../data/vert.glsl", "../data/frag.glsl");
 		baseShader.compile();
+
+		var camIndex = GL.glGetUniformBlockIndex(baseShader.program, "CameraBlock");
+		GL.glUniformBlockBinding(baseShader.program, camIndex, 1);
 
 		baseMap = new MapData();
 		baseMap.load();
 		baseMap.makegl();
 
-		projectionMatrix = new Mat4();
+		var mainView = new reclaim.graphics.ViewData();
+
+		//### Encapsulate UBO
+		var ubos = [0];
+		GL.glGenBuffers(1, ubos);
+		var camUBO = ubos[0];
+		GL.glBindBuffer(GL.GL_UNIFORM_BUFFER, camUBO);
+		GL.glBufferDataEmpty(GL.GL_UNIFORM_BUFFER, mainView.payloadSize, GL.GL_DYNAMIC_DRAW);
 
 		Input.captureMouse(true);
 
-		console = new Console();
+		console = new reclaim.console.Console();
 		console.init();
 
 		while (!mainWindow.win.shouldClose()) {
@@ -91,13 +113,15 @@ class Main
 			var fbsize = mainWindow.win.getFramebufferSize();
 			GL.glViewport(0, 0, fbsize[0], fbsize[1]);
 			var aspect = fbsize[0] / fbsize[1];
-			Mat4.perspective(projectionMatrix, 80.0 / 180.0 * Math.PI,
-				aspect, 0.1, 10000.0);
+			mainView.configPerspective(player.camera.invViewMatrix, aspect, 80.0 / 180.0 * Math.PI,
+				0.1, 10000.0);
+			//### Encapsulate UBO
+			mainView.upload(camUBO);
 
 			GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
 
 			GL.glUseProgram(baseShader.program);
-			baseShader.setProjection(projectionMatrix, player.camera.invViewMatrix);
+			GL.glBindBufferBase(GL.GL_UNIFORM_BUFFER, 1, camUBO);
 
 			baseMap.bind();
 			GL.glDrawElementsOffset(GL.GL_TRIANGLES, 61485, GL.GL_UNSIGNED_INT, 0);

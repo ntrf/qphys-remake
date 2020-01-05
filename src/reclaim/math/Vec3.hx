@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package math;
+package reclaim.math;
 
 import haxe.io.Float32Array;
 
@@ -27,7 +27,7 @@ abstract Vec3(Float32Array) {
 	}
 
 	public static function fromBytes(bytes : haxe.io.Bytes, bytePos = 0) : Vec3 {
-		return cast Float32Array.fromBytes(bytes, bytePos, 3);
+		return cast Float32Array.fromBytes(bytes, bytePos, 12);
 	}
 
 	public var x(get,set) : Single;
