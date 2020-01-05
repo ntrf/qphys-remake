@@ -449,6 +449,9 @@ class Console
 			drawString(commandLine, 22.0, cly, 0xFFFFFFFF);
 			drawString("\x7f", 22.0 + symbolWidth * clCursor, cly, 0xC080FF80);
 		}
+
+		if (mesh.empty())
+			return;
 		
 		//### I should move this somewhere
 		GL.glDisable(GL.GL_DEPTH_TEST);

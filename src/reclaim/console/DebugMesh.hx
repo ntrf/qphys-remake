@@ -41,6 +41,8 @@ class DebugMesh
 		indexVerts = 0;
 	}
 
+	inline public function empty() return indexVerts == 0;
+
 	public function upload()
 	{
 		if (vbo == 0) {

@@ -98,6 +98,8 @@ class Main
 		console = new reclaim.console.Console();
 		console.init();
 
+		console.addCommand("quit", (args : Array< String >) -> mainWindow.win.setShouldClose(true));
+
 		while (!mainWindow.win.shouldClose()) {
 			GLFW.pollEvents();
 
